@@ -1,7 +1,7 @@
 package com.PetStore.productservice.assistant;
 
-import com.PetStore.productservice.model.Product;
-import com.PetStore.productservice.repository.ProductRepository;
+import com.PetStore.product.model.Product;
+import com.PetStore.product.repository.ProductRepository;
 import dev.langchain4j.service.AiServices;
 import org.springframework.stereotype.Service;
 import java.util.List;
