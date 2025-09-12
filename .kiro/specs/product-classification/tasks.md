@@ -6,14 +6,14 @@
   - Write unit tests for Category model validation and repository operations
   - _Requirements: 1.1, 1.2, 5.1_
 
-- [ ] 2. Implement CategoryService with core business logic
+- [-] 2. Implement CategoryService with core business logic
   - Create CategoryService class with CRUD operations
   - Implement category hierarchy validation (prevent circular references)
   - Add category deletion constraints (prevent deletion with assigned products)
   - Write comprehensive unit tests for CategoryService methods
   - _Requirements: 1.1, 1.2, 1.3, 1.4, 1.5, 5.2, 5.4_
 
-- [ ] 3. Create Category DTOs and request/response objects
+- [x] 3. Create Category DTOs and request/response objects
   - Implement CategoryRequest record for API input
   - Implement CategoryResponse record for API output
   - Implement CategoryTreeResponse for hierarchical display

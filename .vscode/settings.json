@@ -1,0 +1,5 @@
+{
+    "github.experimental.multipleAccounts": false,
+    "github.branchProtection": false,
+    "github.gitAuthentication": false
+}
