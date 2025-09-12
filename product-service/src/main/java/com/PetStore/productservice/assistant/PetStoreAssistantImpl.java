@@ -10,9 +10,10 @@ import java.util.List;
 public class PetStoreAssistantImpl {
     
     private final PetStoreAssistant assistant;
-
-    public PetStoreAssistantImpl(ProductRepository productRepository) {
-        this.productRepository = productRepository;
+        private ProductRepository productRepository;
+    
+        public PetStoreAssistantImpl(ProductRepository productRepository) {
+            this.productRepository = productRepository;
         this.assistant = AiServices.builder(PetStoreAssistant.class)
                 .build();
     }
