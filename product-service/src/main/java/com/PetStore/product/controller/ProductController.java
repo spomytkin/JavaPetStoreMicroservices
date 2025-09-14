@@ -24,7 +24,18 @@ public class ProductController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<ProductResponse> getAllProducts() {
+    public List<ProductResponse> getAllProducts(
+            @RequestParam(required = false) String categoryId,
+            @RequestParam(required = false, defaultValue = "false") boolean includeSubcategories) {
+        
+        if (categoryId != null && !categoryId.trim().isEmpty()) {
+            if (includeSubcategories) {
+                return productService.getProductsByCategoryHierarchy(categoryId);
+            } else {
+                return productService.getProductsByCategory(categoryId);
+            }
+        }
+        
         return productService.getAllProducts();
     }
 }
