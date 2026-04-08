@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Java PetStore Microservices - One Page Summary</title>
+  <style>
+    @page {
+      size: Letter;
+      margin: 0.48in;
+    }
+
+    :root {
+      --ink: #1c2430;
+      --muted: #5d6773;
+      --accent: #0e7490;
+      --accent-soft: #e6f6f9;
+      --rule: #d7dee6;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Arial, sans-serif;
+      color: var(--ink);
+      background: #fff;
+      line-height: 1.24;
+      font-size: 10.4pt;
+    }
+
+    .page {
+      width: 100%;
+    }
+
+    .header {
+      display: grid;
+      grid-template-columns: 1.45fr 0.95fr;
+      gap: 0.22in;
+      border-bottom: 2px solid var(--accent);
+      padding-bottom: 0.14in;
+      margin-bottom: 0.18in;
+    }
+
+    h1 {
+      margin: 0 0 0.03in 0;
+      font-size: 22pt;
+      line-height: 1.03;
+      letter-spacing: -0.02em;
+    }
+
+    .subhead {
+      color: var(--muted);
+      font-size: 10pt;
+      margin: 0;
+    }
+
+    .callout {
+      background: linear-gradient(180deg, var(--accent-soft), #f8fcfd);
+      border: 1px solid #bfe7ef;
+      border-radius: 10px;
+      padding: 0.12in 0.14in;
+      align-self: start;
+    }
+
+    .callout h2 {
+      margin: 0 0 0.05in 0;
+      font-size: 10pt;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+    }
+
+    .callout p {
+      margin: 0;
+      font-size: 10pt;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1.03fr 0.97fr;
+      gap: 0.22in;
+    }
+
+    section {
+      margin-bottom: 0.14in;
+    }
+
+    h3 {
+      margin: 0 0 0.07in 0;
+      font-size: 10pt;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+    }
+
+    p {
+      margin: 0;
+    }
+
+    ul, ol {
+      margin: 0;
+      padding-left: 0.18in;
+    }
+
+    li {
+      margin: 0 0 0.05in 0;
+    }
+
+    .tight li {
+      margin-bottom: 0.035in;
+    }
+
+    .arch {
+      border: 1px solid var(--rule);
+      border-radius: 10px;
+      padding: 0.11in 0.13in;
+      background: #fbfcfd;
+    }
+
+    .arch p + p {
+      margin-top: 0.07in;
+    }
+
+    .services {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.08in 0.14in;
+      margin-top: 0.08in;
+      font-size: 9.6pt;
+    }
+
+    .svc {
+      border-top: 1px solid var(--rule);
+      padding-top: 0.05in;
+    }
+
+    .label {
+      font-weight: 700;
+    }
+
+    .foot {
+      border-top: 1px solid var(--rule);
+      margin-top: 0.08in;
+      padding-top: 0.08in;
+      font-size: 8.6pt;
+      color: var(--muted);
+    }
+
+    code {
+      font-family: Consolas, "Courier New", monospace;
+      font-size: 0.92em;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="header">
+      <div>
+        <h1>Java PetStore Microservices</h1>
+        <p class="subhead">Repo summary based on README, Maven modules, service configs, gateway routes, frontend code, and local Docker/Kubernetes assets.</p>
+      </div>
+      <div class="callout">
+        <h2>What It Is</h2>
+        <p>An educational PetStore app refactored from a Java EE style design into Spring Boot microservices with an Angular frontend. The repo packages business services, API gateway, auth/infrastructure configs, and observability tooling for local and Kubernetes-based environments.</p>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div>
+        <section>
+          <h3>Who It's For</h3>
+          <p>Primary persona: Java and full stack developers learning or demonstrating how an e-commerce style application can be split into Spring Boot microservices with gateway, messaging, auth, and frontend layers.</p>
+        </section>
+
+        <section>
+          <h3>What It Does</h3>
+          <ul class="tight">
+            <li>Shows products and lets users add new products through the Angular UI and product API.</li>
+            <li>Accepts orders through the gateway and order service.</li>
+            <li>Checks stock availability through the inventory service before saving an order.</li>
+            <li>Publishes <code>order-placed</code> events to Kafka after successful orders.</li>
+            <li>Consumes order events in the notification service and sends email confirmations.</li>
+            <li>Exposes aggregated Swagger docs through the API gateway.</li>
+            <li>Includes AI assistant chat endpoints in product service via LangChain4j and OpenAI config.</li>
+          </ul>
+        </section>
+
+        <section>
+          <h3>How To Run</h3>
+          <ol class="tight">
+            <li>Start local infrastructure from repo root: <code>docker compose up -d</code>.</li>
+            <li>Start the Angular app from <code>frontend/</code>: <code>npm install</code>, then <code>npm start</code> and open <code>http://localhost:4200</code>.</li>
+            <li>Start backend services: explicit repo-wide command not found; repo evidence shows Spring Boot apps in <code>api-gateway</code>, <code>product-service</code>, <code>order-service</code>, <code>inventory-service</code>, and <code>notification-service</code>.</li>
+            <li>Optional for assistant chat: set <code>OPENAI_API_KEY</code> for product-service. Exact assistant usage docs: Not found in repo.</li>
+          </ol>
+        </section>
+      </div>
+
+      <div>
+        <section>
+          <h3>How It Works</h3>
+          <div class="arch">
+            <p><span class="label">Flow:</span> Angular frontend calls the API gateway at <code>localhost:9000</code> for product and order requests. Gateway routes <code>/api/product</code>, <code>/api/order</code>, and <code>/api/inventory</code> to backing services and applies circuit breaker fallbacks.</p>
+            <p><span class="label">Data:</span> Product service uses MongoDB. Order and inventory services use MySQL with Flyway. Order service calls inventory synchronously to verify stock, then persists the order and publishes an Avro-backed Kafka event. Notification service listens to the Kafka topic and sends email. Keycloak and OIDC config support authentication; Grafana, Prometheus, Loki, and Tempo support observability.</p>
+          </div>
+          <div class="services">
+            <div class="svc"><span class="label">Frontend</span><br>Angular 18 shop UI with OIDC client config.</div>
+            <div class="svc"><span class="label">API Gateway</span><br>Spring Cloud Gateway MVC plus Swagger aggregation.</div>
+            <div class="svc"><span class="label">Product</span><br>REST + MongoDB + assistant chat endpoint.</div>
+            <div class="svc"><span class="label">Order</span><br>REST + MySQL + inventory client + Kafka producer.</div>
+            <div class="svc"><span class="label">Inventory</span><br>REST + MySQL stock checks.</div>
+            <div class="svc"><span class="label">Notification</span><br>Kafka consumer + mail sender.</div>
+          </div>
+        </section>
+
+        <section>
+          <h3>Not Found In Repo</h3>
+          <ul class="tight">
+            <li>A single canonical backend startup command or documented local boot order.</li>
+            <li>End-user deployment guidance or production architecture diagram in text form.</li>
+          </ul>
+        </section>
+      </div>
+    </div>
+
+    <div class="foot">
+      Evidence sources include <code>README.md</code>, <code>docker-compose.yml</code>, root and module <code>pom.xml</code> files, gateway routes, service <code>application.properties</code>, and Angular service/auth files.
+    </div>
+  </div>
+</body>
+</html>

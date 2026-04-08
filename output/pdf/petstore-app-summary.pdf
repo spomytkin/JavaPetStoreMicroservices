@@ -1,0 +1,693 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 4 0 R /F2 5 0 R /F3 6 0 R >> >> /Contents 7 0 R >>
+endobj
+4 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+5 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>
+endobj
+6 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>
+endobj
+7 0 obj
+<< /Length 9499 >>
+stream
+1 1 1 rg
+1 w
+0 0 612 792 re
+f
+0.05 0.45 0.56 RG
+2 w
+40 708 m
+572 708 l
+S
+BT
+0.11 0.14 0.19 rg
+/F2 22 Tf
+1 0 0 1 40 738 Tm
+(Java PetStore Microservices) Tj
+ET
+BT
+0.38 0.41 0.45 rg
+/F1 9 Tf
+1 0 0 1 40 719 Tm
+(Repo summary based on README, Maven modules, service configs, gateway routes,) Tj
+ET
+BT
+0.38 0.41 0.45 rg
+/F1 9 Tf
+1 0 0 1 40 708 Tm
+(frontend code, and local Docker and Kubernetes assets.) Tj
+ET
+0.90 0.97 0.98 rg
+0.75 0.90 0.94 RG
+1 w
+360 720 212 44 re
+B
+BT
+0.05 0.45 0.56 rg
+/F3 9.2 Tf
+1 0 0 1 372 748 Tm
+(WHAT IT IS) Tj
+ET
+BT
+0.11 0.14 0.19 rg
+/F1 9.1 Tf
+1 0 0 1 372 734 Tm
+(An educational PetStore app refactored) Tj
+ET
+BT
+0.11 0.14 0.19 rg
+/F1 9.1 Tf
+1 0 0 1 372 723.3 Tm
+(into Spring Boot microservices with an) Tj
+ET
+BT
+0.11 0.14 0.19 rg
+/F1 9.1 Tf
+1 0 0 1 372 712.5999999999999 Tm
+(Angular frontend, gateway, messaging,) Tj
+ET
+BT
+0.11 0.14 0.19 rg
+/F1 9.1 Tf
+1 0 0 1 372 701.8999999999999 Tm
+(auth, and observability support.) Tj
+ET
+BT
+0.05 0.45 0.56 rg
+/F3 9.2 Tf
+1 0 0 1 40 682 Tm
+(WHO IT'S FOR) Tj
+ET
+BT
+0.11 0.14 0.19 rg
+/F1 9.4 Tf
+1 0 0 1 40 667 Tm
+(Primary persona: Java and full stack developers) Tj
+ET
+BT
+0.11 0.14 0.19 rg
+/F1 9.4 Tf
+1 0 0 1 40 655.6 Tm
+(learning or demonstrating how an e-commerce style) Tj
+ET
+BT
+0.11 0.14 0.19 rg
+/F1 9.4 Tf
+1 0 0 1 40 644.2 Tm
+(application can be split into Spring Boot) Tj
+ET
+BT
+0.11 0.14 0.19 rg
+/F1 9.4 Tf
+1 0 0 1 40 632.8000000000001 Tm
+(microservices.) Tj
+ET
+BT
+0.05 0.45 0.56 rg
+/F3 9.2 Tf
+1 0 0 1 40 626 Tm
+(WHAT IT DOES) Tj
+ET
+BT
+0.05 0.45 0.56 rg
+/F3 9.4 Tf
+1 0 0 1 40 611 Tm
+(-) Tj
+ET
+BT
+0.11 0.14 0.19 rg
+/F1 9.4 Tf
+1 0 0 1 50 611 Tm
+(Shows products and lets users add new products) Tj
+ET
+BT
+0.11 0.14 0.19 rg
+/F1 9.4 Tf
+1 0 0 1 50 599.5 Tm
+(through the Angular UI and product API.) Tj
+ET
+BT
+0.05 0.45 0.56 rg
+/F3 9.4 Tf
+1 0 0 1 40 586 Tm
+(-) Tj
+ET
+BT
+0.11 0.14 0.19 rg
+/F1 9.4 Tf
+1 0 0 1 50 586 Tm
+(Accepts orders through the gateway and order) Tj
+ET
+BT
+0.11 0.14 0.19 rg
+/F1 9.4 Tf
+1 0 0 1 50 574.5 Tm
+(service.) Tj
+ET
+BT
+0.05 0.45 0.56 rg
+/F3 9.4 Tf
+1 0 0 1 40 561 Tm
+(-) Tj
+ET
+BT
+0.11 0.14 0.19 rg
+/F1 9.4 Tf
+1 0 0 1 50 561 Tm
+(Checks stock availability through inventory) Tj
+ET
+BT
+0.11 0.14 0.19 rg
+/F1 9.4 Tf
+1 0 0 1 50 549.5 Tm
+(before saving an order.) Tj
+ET
+BT
+0.05 0.45 0.56 rg
+/F3 9.4 Tf
+1 0 0 1 40 536 Tm
+(-) Tj
+ET
+BT
+0.11 0.14 0.19 rg
+/F1 9.4 Tf
+1 0 0 1 50 536 Tm
+(Publishes order-placed events to Kafka after) Tj
+ET
+BT
+0.11 0.14 0.19 rg
+/F1 9.4 Tf
+1 0 0 1 50 524.5 Tm
+(successful orders.) Tj
+ET
+BT
+0.05 0.45 0.56 rg
+/F3 9.4 Tf
+1 0 0 1 40 511 Tm
+(-) Tj
+ET
+BT
+0.11 0.14 0.19 rg
+/F1 9.4 Tf
+1 0 0 1 50 511 Tm
+(Consumes order events in notification-service) Tj
+ET
+BT
+0.11 0.14 0.19 rg
+/F1 9.4 Tf
+1 0 0 1 50 499.5 Tm
+(and sends email confirmations.) Tj
+ET
+BT
+0.05 0.45 0.56 rg
+/F3 9.4 Tf
+1 0 0 1 40 486 Tm
+(-) Tj
+ET
+BT
+0.11 0.14 0.19 rg
+/F1 9.4 Tf
+1 0 0 1 50 486 Tm
+(Exposes aggregated Swagger docs through the API) Tj
+ET
+BT
+0.11 0.14 0.19 rg
+/F1 9.4 Tf
+1 0 0 1 50 474.5 Tm
+(gateway.) Tj
+ET
+BT
+0.05 0.45 0.56 rg
+/F3 9.4 Tf
+1 0 0 1 40 461 Tm
+(-) Tj
+ET
+BT
+0.11 0.14 0.19 rg
+/F1 9.4 Tf
+1 0 0 1 50 461 Tm
+(Includes AI assistant chat endpoints in) Tj
+ET
+BT
+0.11 0.14 0.19 rg
+/F1 9.4 Tf
+1 0 0 1 50 449.5 Tm
+(product-service via LangChain4j and OpenAI) Tj
+ET
+BT
+0.11 0.14 0.19 rg
+/F1 9.4 Tf
+1 0 0 1 50 438 Tm
+(config.) Tj
+ET
+BT
+0.05 0.45 0.56 rg
+/F3 9.2 Tf
+1 0 0 1 40 333 Tm
+(HOW TO RUN) Tj
+ET
+BT
+0.05 0.45 0.56 rg
+/F3 9.2 Tf
+1 0 0 1 40 318 Tm
+(1.) Tj
+ET
+BT
+0.11 0.14 0.19 rg
+/F1 9.2 Tf
+1 0 0 1 54 318 Tm
+(Start local infrastructure from repo root:) Tj
+ET
+BT
+0.11 0.14 0.19 rg
+/F1 9.2 Tf
+1 0 0 1 54 306.8 Tm
+(docker compose up -d.) Tj
+ET
+BT
+0.05 0.45 0.56 rg
+/F3 9.2 Tf
+1 0 0 1 40 293.6 Tm
+(2.) Tj
+ET
+BT
+0.11 0.14 0.19 rg
+/F1 9.2 Tf
+1 0 0 1 54 293.6 Tm
+(Start the Angular app from frontend/: npm) Tj
+ET
+BT
+0.11 0.14 0.19 rg
+/F1 9.2 Tf
+1 0 0 1 54 282.40000000000003 Tm
+(install, then npm start, and open) Tj
+ET
+BT
+0.11 0.14 0.19 rg
+/F1 9.2 Tf
+1 0 0 1 54 271.20000000000005 Tm
+(http://localhost:4200.) Tj
+ET
+BT
+0.05 0.45 0.56 rg
+/F3 9.2 Tf
+1 0 0 1 40 258.00000000000006 Tm
+(3.) Tj
+ET
+BT
+0.11 0.14 0.19 rg
+/F1 9.2 Tf
+1 0 0 1 54 258.00000000000006 Tm
+(Start backend services: explicit repo-wide) Tj
+ET
+BT
+0.11 0.14 0.19 rg
+/F1 9.2 Tf
+1 0 0 1 54 246.80000000000007 Tm
+(startup command not found; repo evidence shows) Tj
+ET
+BT
+0.11 0.14 0.19 rg
+/F1 9.2 Tf
+1 0 0 1 54 235.60000000000008 Tm
+(Spring Boot apps in api-gateway,) Tj
+ET
+BT
+0.11 0.14 0.19 rg
+/F1 9.2 Tf
+1 0 0 1 54 224.4000000000001 Tm
+(product-service, order-service,) Tj
+ET
+BT
+0.11 0.14 0.19 rg
+/F1 9.2 Tf
+1 0 0 1 54 213.2000000000001 Tm
+(inventory-service, and notification-service.) Tj
+ET
+BT
+0.05 0.45 0.56 rg
+/F3 9.2 Tf
+1 0 0 1 40 200.0000000000001 Tm
+(4.) Tj
+ET
+BT
+0.11 0.14 0.19 rg
+/F1 9.2 Tf
+1 0 0 1 54 200.0000000000001 Tm
+(Optional for assistant chat: set) Tj
+ET
+BT
+0.11 0.14 0.19 rg
+/F1 9.2 Tf
+1 0 0 1 54 188.80000000000013 Tm
+(OPENAI_API_KEY for product-service. Exact) Tj
+ET
+BT
+0.11 0.14 0.19 rg
+/F1 9.2 Tf
+1 0 0 1 54 177.60000000000014 Tm
+(assistant usage docs: Not found in repo.) Tj
+ET
+BT
+0.05 0.45 0.56 rg
+/F3 9.2 Tf
+1 0 0 1 317 682 Tm
+(HOW IT WORKS) Tj
+ET
+0.985 0.99 0.995 rg
+0.84 0.87 0.90 RG
+1 w
+317 514 255 152 re
+B
+BT
+0.11 0.14 0.19 rg
+/F3 9.2 Tf
+1 0 0 1 329 646 Tm
+(Flow) Tj
+ET
+BT
+0.11 0.14 0.19 rg
+/F1 9 Tf
+1 0 0 1 329 633 Tm
+(Angular frontend calls the API gateway at) Tj
+ET
+BT
+0.11 0.14 0.19 rg
+/F1 9 Tf
+1 0 0 1 329 622.2 Tm
+(localhost:9000 for product and order) Tj
+ET
+BT
+0.11 0.14 0.19 rg
+/F1 9 Tf
+1 0 0 1 329 611.4000000000001 Tm
+(requests. Gateway routes /api/product,) Tj
+ET
+BT
+0.11 0.14 0.19 rg
+/F1 9 Tf
+1 0 0 1 329 600.6000000000001 Tm
+(/api/order, and /api/inventory to backing) Tj
+ET
+BT
+0.11 0.14 0.19 rg
+/F1 9 Tf
+1 0 0 1 329 589.8000000000002 Tm
+(services and applies circuit breaker) Tj
+ET
+BT
+0.11 0.14 0.19 rg
+/F1 9 Tf
+1 0 0 1 329 579.0000000000002 Tm
+(fallbacks.) Tj
+ET
+BT
+0.11 0.14 0.19 rg
+/F3 9.2 Tf
+1 0 0 1 329 580 Tm
+(Data) Tj
+ET
+BT
+0.11 0.14 0.19 rg
+/F1 9 Tf
+1 0 0 1 329 567 Tm
+(Product-service uses MongoDB. Order-service) Tj
+ET
+BT
+0.11 0.14 0.19 rg
+/F1 9 Tf
+1 0 0 1 329 556.2 Tm
+(and inventory-service use MySQL with Flyway.) Tj
+ET
+BT
+0.11 0.14 0.19 rg
+/F1 9 Tf
+1 0 0 1 329 545.4000000000001 Tm
+(Order-service calls inventory synchronously,) Tj
+ET
+BT
+0.11 0.14 0.19 rg
+/F1 9 Tf
+1 0 0 1 329 534.6000000000001 Tm
+(saves the order, then publishes a Kafka Avro) Tj
+ET
+BT
+0.11 0.14 0.19 rg
+/F1 9 Tf
+1 0 0 1 329 523.8000000000002 Tm
+(event. Notification-service listens and) Tj
+ET
+BT
+0.11 0.14 0.19 rg
+/F1 9 Tf
+1 0 0 1 329 513.0000000000002 Tm
+(sends email. Keycloak and OIDC config) Tj
+ET
+BT
+0.11 0.14 0.19 rg
+/F1 9 Tf
+1 0 0 1 329 502.2000000000002 Tm
+(support auth; Grafana, Prometheus, Loki, and) Tj
+ET
+BT
+0.11 0.14 0.19 rg
+/F1 9 Tf
+1 0 0 1 329 491.4000000000002 Tm
+(Tempo support observability.) Tj
+ET
+0.84 0.87 0.90 RG
+1 w
+317 496 121 42 re
+S
+BT
+0.11 0.14 0.19 rg
+/F3 8.8 Tf
+1 0 0 1 325 523 Tm
+(Frontend) Tj
+ET
+BT
+0.38 0.41 0.45 rg
+/F1 7.9 Tf
+1 0 0 1 325 511 Tm
+(Angular 18 shop UI with) Tj
+ET
+BT
+0.38 0.41 0.45 rg
+/F1 7.9 Tf
+1 0 0 1 325 502 Tm
+(OIDC client config.) Tj
+ET
+0.84 0.87 0.90 RG
+1 w
+451 496 121 42 re
+S
+BT
+0.11 0.14 0.19 rg
+/F3 8.8 Tf
+1 0 0 1 459 523 Tm
+(API Gateway) Tj
+ET
+BT
+0.38 0.41 0.45 rg
+/F1 7.9 Tf
+1 0 0 1 459 511 Tm
+(Spring Cloud Gateway) Tj
+ET
+BT
+0.38 0.41 0.45 rg
+/F1 7.9 Tf
+1 0 0 1 459 502 Tm
+(MVC plus Swagger) Tj
+ET
+BT
+0.38 0.41 0.45 rg
+/F1 7.9 Tf
+1 0 0 1 459 493 Tm
+(aggregation.) Tj
+ET
+0.84 0.87 0.90 RG
+1 w
+317 441 121 42 re
+S
+BT
+0.11 0.14 0.19 rg
+/F3 8.8 Tf
+1 0 0 1 325 468 Tm
+(Product) Tj
+ET
+BT
+0.38 0.41 0.45 rg
+/F1 7.9 Tf
+1 0 0 1 325 456 Tm
+(REST plus MongoDB plus) Tj
+ET
+BT
+0.38 0.41 0.45 rg
+/F1 7.9 Tf
+1 0 0 1 325 447 Tm
+(assistant chat) Tj
+ET
+BT
+0.38 0.41 0.45 rg
+/F1 7.9 Tf
+1 0 0 1 325 438 Tm
+(endpoint.) Tj
+ET
+0.84 0.87 0.90 RG
+1 w
+451 441 121 42 re
+S
+BT
+0.11 0.14 0.19 rg
+/F3 8.8 Tf
+1 0 0 1 459 468 Tm
+(Order) Tj
+ET
+BT
+0.38 0.41 0.45 rg
+/F1 7.9 Tf
+1 0 0 1 459 456 Tm
+(REST plus MySQL plus) Tj
+ET
+BT
+0.38 0.41 0.45 rg
+/F1 7.9 Tf
+1 0 0 1 459 447 Tm
+(inventory client plus) Tj
+ET
+BT
+0.38 0.41 0.45 rg
+/F1 7.9 Tf
+1 0 0 1 459 438 Tm
+(Kafka producer.) Tj
+ET
+0.84 0.87 0.90 RG
+1 w
+317 386 121 42 re
+S
+BT
+0.11 0.14 0.19 rg
+/F3 8.8 Tf
+1 0 0 1 325 413 Tm
+(Inventory) Tj
+ET
+BT
+0.38 0.41 0.45 rg
+/F1 7.9 Tf
+1 0 0 1 325 401 Tm
+(REST plus MySQL stock) Tj
+ET
+BT
+0.38 0.41 0.45 rg
+/F1 7.9 Tf
+1 0 0 1 325 392 Tm
+(checks.) Tj
+ET
+0.84 0.87 0.90 RG
+1 w
+451 386 121 42 re
+S
+BT
+0.11 0.14 0.19 rg
+/F3 8.8 Tf
+1 0 0 1 459 413 Tm
+(Notification) Tj
+ET
+BT
+0.38 0.41 0.45 rg
+/F1 7.9 Tf
+1 0 0 1 459 401 Tm
+(Kafka consumer plus) Tj
+ET
+BT
+0.38 0.41 0.45 rg
+/F1 7.9 Tf
+1 0 0 1 459 392 Tm
+(mail sender.) Tj
+ET
+BT
+0.05 0.45 0.56 rg
+/F3 9.2 Tf
+1 0 0 1 317 325 Tm
+(NOT FOUND IN REPO) Tj
+ET
+BT
+0.05 0.45 0.56 rg
+/F3 9.2 Tf
+1 0 0 1 317 310 Tm
+(-) Tj
+ET
+BT
+0.11 0.14 0.19 rg
+/F1 9.2 Tf
+1 0 0 1 327 310 Tm
+(A single canonical backend startup command) Tj
+ET
+BT
+0.11 0.14 0.19 rg
+/F1 9.2 Tf
+1 0 0 1 327 299 Tm
+(or documented local boot order.) Tj
+ET
+BT
+0.05 0.45 0.56 rg
+/F3 9.2 Tf
+1 0 0 1 317 286 Tm
+(-) Tj
+ET
+BT
+0.11 0.14 0.19 rg
+/F1 9.2 Tf
+1 0 0 1 327 286 Tm
+(End-user deployment guidance or a) Tj
+ET
+BT
+0.11 0.14 0.19 rg
+/F1 9.2 Tf
+1 0 0 1 327 275 Tm
+(text-based production architecture diagram.) Tj
+ET
+0.84 0.87 0.90 RG
+1 w
+40 72 m
+572 72 l
+S
+BT
+0.38 0.41 0.45 rg
+/F1 8.1 Tf
+1 0 0 1 40 58 Tm
+(Evidence sources include README.md, docker-compose.yml, root and module pom.xml files, gateway) Tj
+ET
+BT
+0.38 0.41 0.45 rg
+/F1 8.1 Tf
+1 0 0 1 40 48.5 Tm
+(routes, service application.properties, and Angular service and auth files.) Tj
+ET
+endstream
+endobj
+xref
+0 8
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000261 00000 n 
+0000000331 00000 n 
+0000000406 00000 n 
+0000000481 00000 n 
+trailer
+<< /Size 8 /Root 1 0 R >>
+startxref
+10032
+%%EOF
