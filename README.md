@@ -3,6 +3,7 @@
 Educational ”pet project” inspired by Java Pet Store Sun/Oracle BluePrints Program projects and courses on microservices development with Spring Boot 3 and current tech.stack.
 
 For Step-by-Step story on refactoring of legacy JavaEE monolith application to microservices architecture, please refer to the separate document: [docs\PetStore_Project_History.md](docs/PetStore_Project_History.md)  
+For a one-page app summary, see [docs/app-summary.html](docs/app-summary.html).
 
 
 ## Purpose
