@@ -2,6 +2,7 @@ package com.PetStore.product.controller;
 
 import com.PetStore.product.dto.CategoryRequest;
 import com.PetStore.product.dto.CategoryResponse;
+import com.PetStore.product.dto.CategoryTreeResponse;
 import com.PetStore.product.exception.CategoryDeletionException;
 import com.PetStore.product.exception.CategoryHierarchyException;
 import com.PetStore.product.exception.CategoryNotFoundException;

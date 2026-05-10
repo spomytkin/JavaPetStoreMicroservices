@@ -2,6 +2,7 @@ package com.PetStore.product.integration;
 
 import com.PetStore.product.dto.CategoryRequest;
 import com.PetStore.product.dto.CategoryResponse;
+import com.PetStore.product.dto.CategoryTreeResponse;
 import com.PetStore.product.dto.ProductRequest;
 import com.PetStore.product.dto.ProductResponse;
 import com.PetStore.product.model.Category;
