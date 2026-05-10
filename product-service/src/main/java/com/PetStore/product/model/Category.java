@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -16,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Document(value = "category")
+@CompoundIndex(name = "unique_category_name_per_parent", def = "{'name': 1, 'parentId': 1}", unique = true)
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

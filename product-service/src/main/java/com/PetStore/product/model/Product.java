@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Document(value = "product")
@@ -20,5 +21,7 @@ public class Product {
     private String description;
     private String skuCode;
     private BigDecimal price;
-    private List<String> categoryIds;
+    
+    @Builder.Default
+    private List<String> categoryIds = new ArrayList<>();
 }

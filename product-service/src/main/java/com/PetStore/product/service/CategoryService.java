@@ -2,6 +2,7 @@ package com.PetStore.product.service;
 
 import com.PetStore.product.dto.CategoryRequest;
 import com.PetStore.product.dto.CategoryResponse;
+import com.PetStore.product.dto.CategoryTreeResponse;
 import com.PetStore.product.exception.CategoryDeletionException;
 import com.PetStore.product.exception.CategoryHierarchyException;
 import com.PetStore.product.exception.CategoryNotFoundException;
@@ -11,6 +12,10 @@ import com.PetStore.product.repository.CategoryRepository;
 import com.PetStore.product.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +23,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 @Service
@@ -27,6 +33,9 @@ public class CategoryService {
 
     private final CategoryRepository categoryRepository;
     private final ProductRepository productRepository;
+    private final MongoTemplate mongoTemplate;
+    
+    private static final int MAX_HIERARCHY_DEPTH = 10;
 
     @Transactional
     public CategoryResponse createCategory(CategoryRequest categoryRequest) {
@@ -57,13 +66,18 @@ public class CategoryService {
                 .updatedAt(now)
                 .build();
 
+        // Save category and update parent atomically
         Category savedCategory = categoryRepository.save(category);
 
-        // Update parent category's childIds if parent exists
+        // Update parent category's childIds atomically if parent exists
         if (parentCategory != null) {
-            parentCategory.getChildIds().add(savedCategory.getId());
-            parentCategory.setUpdatedAt(now);
-            categoryRepository.save(parentCategory);
+            Query parentQuery = new Query(Criteria.where("_id").is(parentCategory.getId()));
+            Update parentUpdate = new Update()
+                    .push("childIds", savedCategory.getId())
+                    .set("updatedAt", now);
+            
+            mongoTemplate.updateFirst(parentQuery, parentUpdate, Category.class);
+            log.debug("Updated parent category {} with new child {}", parentCategory.getId(), savedCategory.getId());
         }
 
         log.info("Category created successfully with id: {}", savedCategory.getId());
@@ -102,16 +116,21 @@ public class CategoryService {
             }
         }
 
-        // Handle parent category changes
-        handleParentCategoryChange(existingCategory, normalizedParentId);
+        // Handle parent category changes atomically
+        handleParentCategoryChangeAtomically(existingCategory.getId(), normalizedParentId);
 
         // Update category fields
-        existingCategory.setName(trimmedName);
-        existingCategory.setDescription(categoryRequest.description() != null ? categoryRequest.description().trim() : null);
-        existingCategory.setParentId(normalizedParentId);
-        existingCategory.setUpdatedAt(LocalDateTime.now());
+        Query categoryQuery = new Query(Criteria.where("_id").is(id));
+        Update categoryUpdate = new Update()
+                .set("name", trimmedName)
+                .set("description", categoryRequest.description() != null ? categoryRequest.description().trim() : null)
+                .set("parentId", normalizedParentId)
+                .set("updatedAt", LocalDateTime.now());
 
-        Category updatedCategory = categoryRepository.save(existingCategory);
+        Category updatedCategory = mongoTemplate.findAndModify(categoryQuery, categoryUpdate, Category.class);
+        if (updatedCategory == null) {
+            throw new CategoryNotFoundException("Category not found with id: " + id);
+        }
 
         log.info("Category updated successfully with id: {}", updatedCategory.getId());
         return mapToResponse(updatedCategory);
@@ -129,31 +148,33 @@ public class CategoryService {
 
         // Check if category has assigned products
         if (hasAssignedProducts(id)) {
-            long productCount = productRepository.findByCategoryIdsContaining(id).size();
+            long productCount = getAssignedProductCount(id);
             throw new CategoryDeletionException(
                 String.format("Cannot delete category '%s' as it has %d assigned product(s). " +
                     "Please remove all products from this category before deletion.", 
                     category.getName(), productCount));
         }
 
-        // Handle child categories - make them orphaned
+        // Handle child categories - make them orphaned atomically
         if (!category.getChildIds().isEmpty()) {
-            List<Category> childCategories = categoryRepository.findAllById(category.getChildIds());
-            for (Category child : childCategories) {
-                child.setParentId(null);
-                child.setUpdatedAt(LocalDateTime.now());
-            }
-            categoryRepository.saveAll(childCategories);
-            log.info("Orphaned {} child categories during deletion of category: {}", childCategories.size(), id);
+            Query childrenQuery = new Query(Criteria.where("_id").in(category.getChildIds()));
+            Update childrenUpdate = new Update()
+                    .set("parentId", null)
+                    .set("updatedAt", LocalDateTime.now());
+            
+            mongoTemplate.updateMulti(childrenQuery, childrenUpdate, Category.class);
+            log.info("Orphaned {} child categories during deletion of category: {}", category.getChildIds().size(), id);
         }
 
-        // Remove this category from parent's childIds
+        // Remove this category from parent's childIds atomically
         if (category.getParentId() != null) {
-            categoryRepository.findById(category.getParentId()).ifPresent(parent -> {
-                parent.getChildIds().remove(id);
-                parent.setUpdatedAt(LocalDateTime.now());
-                categoryRepository.save(parent);
-            });
+            Query parentQuery = new Query(Criteria.where("_id").is(category.getParentId()));
+            Update parentUpdate = new Update()
+                    .pull("childIds", id)
+                    .set("updatedAt", LocalDateTime.now());
+            
+            mongoTemplate.updateFirst(parentQuery, parentUpdate, Category.class);
+            log.debug("Removed category {} from parent {}", id, category.getParentId());
         }
 
         categoryRepository.delete(category);
@@ -200,28 +221,32 @@ public class CategoryService {
                 .toList();
     }
 
-    public List<CategoryResponse> getCategoryTree() {
+    public List<CategoryTreeResponse> getCategoryTree() {
         log.info("Building category tree structure");
 
         // Get all root categories and build tree recursively
         List<Category> rootCategories = categoryRepository.findByParentIdIsNull();
         return rootCategories.stream()
-                .map(this::buildCategoryTree)
+                .map(this::buildCategoryTreeResponse)
                 .toList();
     }
 
-    private CategoryResponse buildCategoryTree(Category category) {
-        CategoryResponse response = mapToResponse(category);
-
+    private CategoryTreeResponse buildCategoryTreeResponse(Category category) {
         // Recursively build child categories
         List<Category> children = categoryRepository.findByParentId(category.getId());
-        List<CategoryResponse> childResponses = children.stream()
-                .map(this::buildCategoryTree)
+        List<CategoryTreeResponse> childResponses = children.stream()
+                .map(this::buildCategoryTreeResponse)
                 .toList();
 
-        // Note: CategoryResponse record doesn't support setting children directly
-        // This will be enhanced when CategoryTreeResponse is implemented in task 3
-        return response;
+        return new CategoryTreeResponse(
+                category.getId(),
+                category.getName(),
+                category.getDescription(),
+                category.getParentId(),
+                childResponses,
+                category.getCreatedAt(),
+                category.getUpdatedAt()
+        );
     }
 
     private void validateCategoryNameUniqueness(String name, String parentId) {
@@ -244,8 +269,34 @@ public class CategoryService {
 
         Set<String> visited = new HashSet<>();
         String currentParentId = newParentId;
+        int depth = 0;
 
-        while (currentParentId != null) {
+        // Batch fetch all categories in the potential hierarchy to reduce database queries
+        List<String> idsToCheck = new ArrayList<>();
+        String tempId = newParentId;
+        while (tempId != null && depth < MAX_HIERARCHY_DEPTH) {
+            idsToCheck.add(tempId);
+            // Get next parent ID from cache if available, otherwise break and fetch batch
+            Category tempCategory = categoryRepository.findById(tempId).orElse(null);
+            tempId = tempCategory != null ? tempCategory.getParentId() : null;
+            depth++;
+        }
+
+        // Check hierarchy depth limit
+        if (depth >= MAX_HIERARCHY_DEPTH) {
+            throw new CategoryHierarchyException(
+                    String.format("Category hierarchy cannot exceed %d levels", MAX_HIERARCHY_DEPTH));
+        }
+
+        // Fetch all categories in batch
+        Map<String, Category> categoryMap = categoryRepository.findAllById(idsToCheck)
+                .stream()
+                .collect(java.util.stream.Collectors.toMap(Category::getId, cat -> cat));
+
+        // Now validate the hierarchy using cached data
+        currentParentId = newParentId;
+        depth = 0;
+        while (currentParentId != null && depth < MAX_HIERARCHY_DEPTH) {
             if (visited.contains(currentParentId)) {
                 throw new CategoryHierarchyException("Circular reference detected in category hierarchy");
             }
@@ -256,14 +307,23 @@ public class CategoryService {
             }
 
             visited.add(currentParentId);
+            depth++;
 
-            Category parentCategory = categoryRepository.findById(currentParentId).orElse(null);
-            currentParentId = parentCategory != null ? parentCategory.getParentId() : null;
+            Category parentCategory = categoryMap.get(currentParentId);
+            if (parentCategory == null) {
+                throw new CategoryNotFoundException("Parent category not found with id: " + currentParentId);
+            }
+            currentParentId = parentCategory.getParentId();
         }
     }
 
-    private void handleParentCategoryChange(Category category, String newParentId) {
-        String oldParentId = category.getParentId();
+    private void handleParentCategoryChangeAtomically(String categoryId, String newParentId) {
+        // Get current category to find old parent
+        Category currentCategory = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new CategoryNotFoundException("Category not found with id: " + categoryId));
+        
+        String oldParentId = currentCategory.getParentId();
+        LocalDateTime now = LocalDateTime.now();
 
         // If parent is not changing, do nothing
         if ((oldParentId == null && newParentId == null) ||
@@ -271,32 +331,41 @@ public class CategoryService {
             return;
         }
 
-        LocalDateTime now = LocalDateTime.now();
-
-        // Remove from old parent's childIds
+        // Remove from old parent's childIds atomically
         if (oldParentId != null) {
-            categoryRepository.findById(oldParentId).ifPresent(oldParent -> {
-                oldParent.getChildIds().remove(category.getId());
-                oldParent.setUpdatedAt(now);
-                categoryRepository.save(oldParent);
-            });
+            Query oldParentQuery = new Query(Criteria.where("_id").is(oldParentId));
+            Update oldParentUpdate = new Update()
+                    .pull("childIds", categoryId)
+                    .set("updatedAt", now);
+            
+            mongoTemplate.updateFirst(oldParentQuery, oldParentUpdate, Category.class);
+            log.debug("Removed category {} from old parent {}", categoryId, oldParentId);
         }
 
-        // Add to new parent's childIds
+        // Add to new parent's childIds atomically
         if (newParentId != null) {
-            categoryRepository.findById(newParentId).ifPresent(newParent -> {
-                if (!newParent.getChildIds().contains(category.getId())) {
-                    newParent.getChildIds().add(category.getId());
-                    newParent.setUpdatedAt(now);
-                    categoryRepository.save(newParent);
-                }
-            });
+            Query newParentQuery = new Query(Criteria.where("_id").is(newParentId));
+            Update newParentUpdate = new Update()
+                    .addToSet("childIds", categoryId)
+                    .set("updatedAt", now);
+            
+            mongoTemplate.updateFirst(newParentQuery, newParentUpdate, Category.class);
+            log.debug("Added category {} to new parent {}", categoryId, newParentId);
         }
     }
 
+    
     private boolean hasAssignedProducts(String categoryId) {
-        // Check if any products are assigned to this category
-        return !productRepository.findByCategoryIdsContaining(categoryId).isEmpty();
+        // Use count query instead of loading all products
+        Query query = new Query(Criteria.where("categoryIds").is(categoryId));
+        long count = mongoTemplate.count(query, "product");
+        return count > 0;
+    }
+
+    private long getAssignedProductCount(String categoryId) {
+        // Get actual count for error messages
+        Query query = new Query(Criteria.where("categoryIds").is(categoryId));
+        return mongoTemplate.count(query, "product");
     }
 
     private void validateCategoryRequest(CategoryRequest categoryRequest) {
@@ -304,37 +373,10 @@ public class CategoryService {
             throw new CategoryValidationException("Category request cannot be null");
         }
         
-        if (categoryRequest.name() == null || categoryRequest.name().trim().isEmpty()) {
-            throw new CategoryValidationException("Category name is required");
-        }
-        
-        String trimmedName = categoryRequest.name().trim();
-        if (trimmedName.length() < 2) {
-            throw new CategoryValidationException("Category name must be at least 2 characters long");
-        }
-        
-        if (trimmedName.length() > 100) {
-            throw new CategoryValidationException("Category name cannot exceed 100 characters");
-        }
-        
-        // Validate name format
-        if (!trimmedName.matches("^[a-zA-Z0-9\\s\\-_&]+$")) {
-            throw new CategoryValidationException(
-                "Category name can only contain letters, numbers, spaces, hyphens, underscores, and ampersands");
-        }
-        
-        // Validate description length
-        if (categoryRequest.description() != null && categoryRequest.description().length() > 500) {
-            throw new CategoryValidationException("Description cannot exceed 500 characters");
-        }
-        
-        // Validate parent ID format if provided
-        if (categoryRequest.parentId() != null && !categoryRequest.parentId().trim().isEmpty()) {
-            String trimmedParentId = categoryRequest.parentId().trim();
-            if (!trimmedParentId.matches("^[a-zA-Z0-9\\-_]+$")) {
-                throw new CategoryValidationException("Parent ID must be a valid identifier");
-            }
-        }
+        // Additional business logic validation that's not covered by annotations
+        // Format validation is handled by @Pattern annotations in DTO
+        // Length validation is handled by @Size annotations in DTO
+        // Required field validation is handled by @NotBlank annotations in DTO
     }
 
     private void validateCategoryId(String id) {

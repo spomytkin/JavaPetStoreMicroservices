@@ -2,6 +2,7 @@ package com.PetStore.product.controller;
 
 import com.PetStore.product.dto.CategoryRequest;
 import com.PetStore.product.dto.CategoryResponse;
+import com.PetStore.product.dto.CategoryTreeResponse;
 import com.PetStore.product.service.CategoryService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -37,7 +38,7 @@ public class CategoryController {
 
     @GetMapping("/tree")
     @ResponseStatus(HttpStatus.OK)
-    public List<CategoryResponse> getCategoryTree() {
+    public List<CategoryTreeResponse> getCategoryTree() {
         return categoryService.getCategoryTree();
     }
 
