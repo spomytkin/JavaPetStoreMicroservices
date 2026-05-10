@@ -353,13 +353,14 @@ class CategoryProductWorkflowMockIntegrationTest {
         List<Category> allCategories = List.of(rootCategory, childCategory, grandchildCategory);
         when(categoryRepository.findAll()).thenReturn(allCategories);
 
-        List<CategoryResponse> categoryTree = categoryService.getCategoryTree();
+        List<CategoryTreeResponse> categoryTree = categoryService.getCategoryTree();
 
         // Verify tree structure
         assertThat(categoryTree).hasSize(1); // One root category
-        CategoryResponse rootInTree = categoryTree.get(0);
+        CategoryTreeResponse rootInTree = categoryTree.get(0);
         assertThat(rootInTree.name()).isEqualTo("Pets");
-        assertThat(rootInTree.childIds()).contains("child-001");
+        assertThat(rootInTree.children()).hasSize(1); // One child category
+        assertThat(rootInTree.children().get(0).id()).isEqualTo("child-001");
     }
 
     @Test
@@ -441,9 +442,9 @@ class CategoryProductWorkflowMockIntegrationTest {
         when(categoryRepository.findAll()).thenReturn(complexHierarchy);
 
         // Test tree retrieval for complex structure
-        List<CategoryResponse> tree = categoryService.getCategoryTree();
+        List<CategoryTreeResponse> tree = categoryService.getCategoryTree();
         assertThat(tree).hasSize(1); // One root
-        assertThat(tree.get(0).childIds()).hasSize(3); // Three level 1 children
+        assertThat(tree.get(0).children()).hasSize(3); // Three level 1 children
 
         // Test hierarchy-based product filtering
         when(categoryRepository.findById("level1-1")).thenReturn(Optional.of(complexHierarchy.get(1)));

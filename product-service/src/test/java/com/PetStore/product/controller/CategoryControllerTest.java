@@ -39,7 +39,7 @@ class CategoryControllerTest {
 
     private CategoryRequest validCategoryRequest;
     private CategoryResponse categoryResponse;
-    private CategoryResponse rootCategoryResponse;
+    private CategoryTreeResponse rootCategoryTreeResponse;
     private CategoryResponse childCategoryResponse;
 
     @BeforeEach
@@ -62,12 +62,12 @@ class CategoryControllerTest {
                 now
         );
 
-        rootCategoryResponse = new CategoryResponse(
+        rootCategoryTreeResponse = new CategoryTreeResponse(
                 "root-id",
                 "Root Category",
                 "Root Description",
                 null,
-                List.of("child-id-1", "child-id-2"),
+                List.of(),
                 now,
                 now
         );
@@ -171,7 +171,7 @@ class CategoryControllerTest {
 
     @Test
     void getCategoryTree_ShouldReturnOkWithTreeStructure() throws Exception {
-        List<CategoryResponse> tree = List.of(rootCategoryResponse);
+        List<CategoryTreeResponse> tree = List.of(rootCategoryTreeResponse);
         when(categoryService.getCategoryTree()).thenReturn(tree);
 
         mockMvc.perform(get("/api/category/tree"))
